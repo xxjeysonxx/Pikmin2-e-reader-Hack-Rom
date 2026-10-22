@@ -1,0 +1,18 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+printf "=== inicio PC=%08X\n", $pc
+watch *(unsigned short*)0x02004202
+continue
+printf "=== hit1 pc=%08X lr=%08X val=%04X\n", $pc, $lr, *(unsigned short*)0x02004202
+info registers r0 r1 r2 r3 r4 r5 r6 r7
+x/16i $pc-16
+delete 1
+watch *(unsigned short*)0x02004202 if *(unsigned short*)0x02004202 == 0x2026
+continue
+printf "=== hit HOJA pc=%08X lr=%08X sp=%08X\n", $pc, $lr, $sp
+info registers r0 r1 r2 r3 r4 r5 r6 r7
+printf "--- codigo\n"
+x/34i $pc-34
+printf "=== fin\n"
+quit

@@ -1,0 +1,11 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+break *0x080036c0
+continue
+printf "=== antes del DMA\n"
+dump binary memory map_bg1.bin 0x020380A4 0x020390A4
+dump binary memory chr_bg1.bin 0x02004000 0x02005000
+printf "=== volcado ok\n"
+quit

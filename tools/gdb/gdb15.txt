@@ -1,0 +1,13 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio\n"
+watch *(unsigned short*)0x020382A6 if *(unsigned short*)0x020382A6 == 0x2026
+continue
+printf "=== HOJA en casilla 1: pc=%08X lr=%08X sp=%08X\n", $pc, $lr, $sp
+info registers r0 r1 r2 r3 r4 r5 r6 r7
+printf "--- codigo\n"
+x/32i $pc-32
+printf "=== fin\n"
+quit

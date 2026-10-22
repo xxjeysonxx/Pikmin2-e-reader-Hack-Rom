@@ -1,0 +1,14 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio PC=%08X\n", $pc
+watch *(unsigned short*)0x02004202
+set $i = 0
+while $i < 10
+  continue
+  printf "=== hit %d pc=%08X lr=%08X val=%04X\n", $i, $pc, $lr, *(unsigned short*)0x02004202
+  set $i = $i + 1
+end
+printf "=== fin\n"
+quit

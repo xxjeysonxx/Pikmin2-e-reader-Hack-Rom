@@ -1,0 +1,16 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+watch *(unsigned short*)0x0600D102
+continue
+printf "=== HIT\n"
+printf "DMA0SAD=%08X DMA0DAD=%08X DMA0CNT=%08X\n", *(unsigned int*)0x040000D4, *(unsigned int*)0x040000D8, *(unsigned int*)0x040000DC
+info registers r0 r1 r2 r3 r4 r5 r6 r7 sp lr pc
+printf "--- funcion que hace el DMA\n"
+x/44i 0x8003680
+printf "--- tabla de descriptores\n"
+x/24wx 0x02032A90
+dump binary memory ew_hit.bin 0x02020000 0x02040000
+dump binary memory vram_hit.bin 0x06000000 0x06018000
+printf "=== fin\n"
+quit

@@ -1,0 +1,17 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+break *0x0802a7b4
+ignore 1 700
+continue
+printf "=== stopped after ~2000 polls\n"
+info registers pc lr sp
+printf "IRQ vector 0x03007FFC = "
+x/1xw 0x03007ffc
+dump binary memory ewram.bin 0x02000000 0x02040000
+dump binary memory iwram.bin 0x03000000 0x03008000
+dump binary memory vram.bin 0x06000000 0x06018000
+dump binary memory pal.bin 0x05000000 0x05000400
+dump binary memory oam.bin 0x07000000 0x07000400
+printf "=== dumps done\n"
+quit

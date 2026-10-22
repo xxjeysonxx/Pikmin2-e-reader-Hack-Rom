@@ -1,0 +1,20 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+break *0x0300438c
+ignore 1 400
+continue
+printf "=== menu reached\n"
+delete 1
+shell sleep 3
+shell "C:/Users/Soora/.workbuddy-ai/binaries/python/envs/default/Scripts/python.exe" _mgba.py shot shot_before.png
+set *(unsigned short*)0x0600D102 = 0x2826
+set *(unsigned short*)0x0600D104 = 0x2829
+set *(unsigned short*)0x0600D184 = 0x2826
+set *(unsigned short*)0x0600D186 = 0x2829
+break *0x0300438c
+ignore 2 4
+continue
+shell "C:/Users/Soora/.workbuddy-ai/binaries/python/envs/default/Scripts/python.exe" _mgba.py shot shot_after.png
+printf "=== done\n"
+quit

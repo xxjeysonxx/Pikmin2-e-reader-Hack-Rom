@@ -1,0 +1,12 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+printf "=== conectado, PC inicial=%08X\n", $pc
+watch *(unsigned short*)0x0600D102
+continue
+printf "=== HIT escritura en BG1 casilla 1 (0x0600D102)\n"
+info registers pc lr sp r0 r1 r2 r3 r4 r5 r6 r7
+printf "--- codigo alrededor\n"
+x/28i $pc-28
+printf "--- fin\n"
+quit

@@ -1,0 +1,12 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio\n"
+watch *(unsigned short*)0x020382A6 if *(unsigned short*)0x020382A6 == 0x2026
+continue
+printf "=== HIT pc=%08X lr=%08X sp=%08X r8=%08X r9=%08X r10=%08X r11=%08X r12=%08X\n", $pc, $lr, $sp, $r8, $r9, $r10, $r11, $r12
+printf "--- pila\n"
+x/48wx $sp
+printf "--- fin\n"
+quit

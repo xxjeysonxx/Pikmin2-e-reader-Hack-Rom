@@ -1,0 +1,18 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+break *0x0300438c
+ignore 1 500
+continue
+printf "=== at menu after 500 IRQs\n"
+info registers pc lr sp
+printf "DISPCNT=%08X\n", *(unsigned int*)0x04000000
+dump binary memory vram_menu.bin 0x06000000 0x06018000
+dump binary memory ewram_menu.bin 0x02000000 0x02040000
+dump binary memory oam_menu.bin 0x07000000 0x07000400
+watch *(unsigned int*)0x07000000
+continue
+printf "=== OAM write hit\n"
+info registers pc lr sp r0 r1 r2 r3 r4 r5 r6 r7
+x/24i $pc-24
+quit

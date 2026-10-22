@@ -1,0 +1,13 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio\n"
+watch *(unsigned char*)0x0200000C
+continue
+printf "=== W1 pc=%08X lr=%08X val=%02X\n", $pc, $lr, *(unsigned char*)0x0200000C
+info registers r0 r1 r2 r3 r4 r5 r6 r7
+printf "--- codigo\n"
+x/24i $pc-24
+printf "=== fin\n"
+quit

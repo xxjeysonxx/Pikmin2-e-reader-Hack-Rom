@@ -1,0 +1,17 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio\n"
+break *0x080036de
+continue
+printf "=== iter1 SAD=%08X r6=%08X r5=%08X r4=%d\n", $r0, $r6, $r5, $r4
+x/8wx $r6
+continue
+printf "=== iter2 SAD=%08X r6=%08X r5=%08X r4=%d\n", $r0, $r6, $r5, $r4
+x/8wx $r6
+continue
+printf "=== iter3 SAD=%08X r6=%08X r5=%08X r4=%d\n", $r0, $r6, $r5, $r4
+x/8wx $r6
+printf "=== fin\n"
+quit

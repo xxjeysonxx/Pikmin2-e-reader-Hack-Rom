@@ -1,0 +1,18 @@
+set pagination off
+set confirm off
+set remotetimeout 10
+target remote 127.0.0.1:2345
+printf "=== inicio\n"
+break *0x08022cf0
+set $i = 0
+while $i < 6
+  continue
+  printf "=== celda idx=%d r0=%08X base_bytes=%08X byte=%02X tabla=%08X desc=%08X\n", *(unsigned short*)($r0+0x10), $r0, *(unsigned int*)($r0+0x14), *(unsigned char*)(*(unsigned int*)($r0+0x14) + *(unsigned short*)($r0+0x10)), 0x084DF37C, *(unsigned int*)(0x084DF37C + 4*(*(unsigned char*)(*(unsigned int*)($r0+0x14) + *(unsigned short*)($r0+0x10))))
+  set $i = $i + 1
+end
+printf "--- array de bytes (64)\n"
+x/64xb *(unsigned int*)($r0+0x14)
+printf "--- tabla de descriptores (24 punteros)\n"
+x/24wx 0x084DF37C
+printf "=== fin\n"
+quit

@@ -1,0 +1,19 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+break *0x0300438c
+ignore 1 400
+continue
+printf "=== menu reached\n"
+delete 1
+shell sleep 6
+dump binary memory ew_before.bin 0x02000000 0x02040000
+dump binary memory vram_before.bin 0x06000000 0x06018000
+watch *(unsigned short*)0x0600D102
+continue
+printf "=== WRITE HIT\n"
+info registers pc lr sp r0 r1 r2 r3 r4 r5 r6 r7
+x/40i $pc-40
+dump binary memory ew_after.bin 0x02000000 0x02040000
+dump binary memory vram_after.bin 0x06000000 0x06018000
+quit

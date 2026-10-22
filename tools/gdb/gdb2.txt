@@ -1,0 +1,22 @@
+set pagination off
+set confirm off
+target remote 127.0.0.1:2345
+break *0x080000c0
+continue
+printf "=== entry reached\n"
+info registers pc lr sp
+delete
+rwatch *(unsigned short*)0x04000130
+continue
+printf "=== KEYINPUT read #1\n"
+info registers pc lr sp r0 r1 r2 r3
+x/12i $pc-16
+continue
+printf "=== KEYINPUT read #2\n"
+info registers pc lr sp r0 r1 r2 r3
+x/12i $pc-16
+continue
+printf "=== KEYINPUT read #3\n"
+info registers pc lr sp r0 r1 r2 r3
+x/12i $pc-16
+quit
